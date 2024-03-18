@@ -1,0 +1,15 @@
+name: Validate
+
+on: [push]
+
+jobs:
+  validate:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Report Terraform version
+      run: terraform version
+    - name: Initialize Terraform
+      run: terraform init
+    - name: Validate Terraform
+      run: terraform validate
