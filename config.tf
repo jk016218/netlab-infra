@@ -14,3 +14,20 @@ variable "netlab_main_prefix" {
   type = string
   default = "10.73.86.128/26"  # 10.73.86.129-190
 }
+
+# SSH
+variable "ssh_public_key" {
+  type = string
+  default = ""
+}
+
+# The "shell machine"
+variable "shellmachine_private_ip_address" {
+  type = string
+  default = "10.73.86.150"
+}
+
+variable "shellmachine_username" {
+  type = string
+  default = "netlab"
+}

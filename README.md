@@ -26,6 +26,10 @@ export ARM_CLIENT_ID=$(echo $AZURE_SP | jq -r '.appId')
 export ARM_CLIENT_SECRET=$(echo $AZURE_SP | jq -r '.password')
 export ARM_TENANT_ID=$(echo $AZURE_SP | jq -r '.tenant')
 
+# An SSH key for logging into machines in the "netlab" network.
+# Azure requires that this is of the `ssh-keygen -t rsa` kind.
+export TF_VAR_ssh_public_key=$(ssh-keygen -f /path/to/private/key -y)
+
 # If there's a need to debug things, declare e.g. `TF_LOG=debug terraform init`;
 # check out https://developer.hashicorp.com/terraform/internals/debugging for further details.
 terraform init
