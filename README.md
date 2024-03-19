@@ -6,12 +6,18 @@ tldr; Install at least
 and
 [jq](https://jqlang.github.io/jq/download/).
 
+In order to keep things streamlined and hassle at a minimum,
+[state](https://developer.hashicorp.com/terraform/language/state)
+is local.
 
+For details about the `ARM_*` environment variable below, do check out
+["Authenticate Terraform to Azure"](https://learn.microsoft.com/en-us/azure/developer/terraform/authenticate-to-azure?tabs=bash#2-authenticate-terraform-to-azure).
 
 ```console
-# In an attempt to avoid unnecessary confusion, pick subscription manually. Your's will likely look different:
+# To avoid unnecessary confusion, pick a subscription manually. Your's will likely look different:
 az login
-ARM_SUBSCRIPTION_ID=06b0ab03-5ae9-459a-bdd6-78a5caf206f0  # Pick one from previous command's output
+az account list
+export ARM_SUBSCRIPTION_ID=06b0ab03-5ae9-459a-bdd6-78a5caf206f0  # Pick correct `id` from previous command's output (whatever "correct" means)
 
 # Lay credentials out for Terraform's consumption
 az account set --subscription $ARM_SUBSCRIPTION_ID
@@ -20,5 +26,9 @@ export ARM_CLIENT_ID=$(echo $AZURE_SP | jq -r '.appId')
 export ARM_CLIENT_SECRET=$(echo $AZURE_SP | jq -r '.password')
 export ARM_TENANT_ID=$(echo $AZURE_SP | jq -r '.tenant')
 
-
+# If there's a need to debug things, declare e.g. `TF_LOG=debug terraform init`;
+# check out https://developer.hashicorp.com/terraform/internals/debugging for further details.
+terraform init
+terraform plan
+terraform apply
 ```
