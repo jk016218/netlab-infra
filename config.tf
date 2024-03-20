@@ -1,6 +1,6 @@
 variable "region" {
   type = string
-  default = "West Europe"
+  default = "swedencentral"
 }
 
 # To avoid collisions, don't consume unnecessarily big chunks
@@ -22,6 +22,11 @@ variable "ssh_public_key" {
 }
 
 # The "shell machine"
+variable "shellmachine_kind" {
+  type = string
+  default = "Standard_B1s"
+}
+
 variable "shellmachine_private_ip_address" {
   type = string
   default = "10.73.86.150"

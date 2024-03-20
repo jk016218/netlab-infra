@@ -23,7 +23,7 @@ resource "azurerm_linux_virtual_machine" "shellmachine" {
   name                = "shellmachine"
   resource_group_name = azurerm_resource_group.netlab.name
   location            = azurerm_resource_group.netlab.location
-  size                = "Standard_A1"
+  size                = var.shellmachine_kind
   admin_username      = var.shellmachine_username
   network_interface_ids = [
     azurerm_network_interface.shellmachine.id,
@@ -45,4 +45,8 @@ resource "azurerm_linux_virtual_machine" "shellmachine" {
     sku       = "22_04-lts"
     version   = "latest"
   }
+}
+
+output "shellmachine_public_ip_address" {
+  value = azurerm_public_ip.shellmachine.ip_address
 }
