@@ -1,6 +1,29 @@
 # netlab-infra
 
-tldr; Install at least
+tldr; Work with the [supplied Dockerfile](./Dockerfile):
+
+FIXME verify that this works 100% of the time
+
+```console
+docker build \
+       --build-arg ARM_SUBSCRIPTION_ID=06b0ab03-5ae9-459a-bdd6-78a5caf206f0 \
+       --progress plain \
+       --tag netlab-runner . \
+       && echo "DO NOT push this image anywhere"
+docker run --rm -it -v ${PWD}:/workdir netlab-runner
+```
+
+Then, inside `netlab-runner` container:
+
+```console
+terraform init
+terraform plan
+terraform apply
+```
+
+Or manually:
+
+Install at least
 [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli),
 [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt),
 and
@@ -10,7 +33,7 @@ In order to keep things streamlined and hassle at a minimum,
 [state](https://developer.hashicorp.com/terraform/language/state)
 is local.
 
-For details about the `ARM_*` environment variable below, do check out
+For details about the `ARM_*` environment variables below, do check out
 ["Authenticate Terraform to Azure"](https://learn.microsoft.com/en-us/azure/developer/terraform/authenticate-to-azure?tabs=bash#2-authenticate-terraform-to-azure).
 
 ```console
