@@ -1,6 +1,30 @@
 # netlab-infra
 
-tldr; Install at least
+tldr; Work with the [supplied Dockerfile](./Dockerfile):
+
+```console
+docker build --tag netlab-terraformer .
+
+# SSH agent should be running, and have the "correct" key of `ssh-keygen -t rsa` kind loaded.
+# The az-setup.sh script uses the first "ssh-rsa" key listed in `ssh-add -L`'s output.
+export DOCKER_SSHAGENT="-v $SSH_AUTH_SOCK:$SSH_AUTH_SOCK -e SSH_AUTH_SOCK"
+docker run --rm -it -v ${PWD}:/workdir $(echo $DOCKER_SSHAGENT) netlab-terraformer
+```
+
+Then, inside `netlab-terraformer` container:
+
+```console
+# FIXME would need to occasionally clean up all these `az ad sp create-for-rbac` principals. I think.
+az-setup.sh
+
+terraform init
+terraform plan
+terraform apply
+```
+
+Or, skipping Docker and doing it manually:
+
+Install at least
 [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli),
 [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt),
 and
@@ -10,7 +34,7 @@ In order to keep things streamlined and hassle at a minimum,
 [state](https://developer.hashicorp.com/terraform/language/state)
 is local.
 
-For details about the `ARM_*` environment variable below, do check out
+For details about the `ARM_*` environment variables below, do check out
 ["Authenticate Terraform to Azure"](https://learn.microsoft.com/en-us/azure/developer/terraform/authenticate-to-azure?tabs=bash#2-authenticate-terraform-to-azure).
 
 ```console
