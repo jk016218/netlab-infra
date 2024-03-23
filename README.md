@@ -2,8 +2,6 @@
 
 tldr; Work with the [supplied Dockerfile](./Dockerfile):
 
-FIXME verify that this works 100% of the time
-
 ```console
 docker build --tag netlab-terraformer .
 
@@ -16,6 +14,7 @@ docker run --rm -it -v ${PWD}:/workdir $(echo $DOCKER_SSHAGENT) netlab-terraform
 Then, inside `netlab-terraformer` container:
 
 ```console
+# FIXME would need to occasionally clean up all these `az ad sp create-for-rbac` principals. I think.
 az-setup.sh
 
 terraform init
