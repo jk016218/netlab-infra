@@ -49,7 +49,7 @@ variable "payload_kind" {
 
 variable "payload_private_ip_addresses" {
   type = list
-  default = ["10.73.86.150", "10.73.86.151", "10.73.86.152"]
+  default = ["10.73.86.150", "10.73.86.151", "10.73.86.152"]  # FIXME make this and other addressing stuff more dynamic
 }
 
 variable "payload_username" {
