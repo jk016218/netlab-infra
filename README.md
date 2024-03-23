@@ -5,23 +5,25 @@ tldr; Work with the [supplied Dockerfile](./Dockerfile):
 FIXME verify that this works 100% of the time
 
 ```console
-docker build \
-       --build-arg ARM_SUBSCRIPTION_ID=06b0ab03-5ae9-459a-bdd6-78a5caf206f0 \
-       --progress plain \
-       --tag netlab-runner . \
-       && echo "DO NOT push this image anywhere"
-docker run --rm -it -v ${PWD}:/workdir netlab-runner
+docker build --tag netlab-terraformer .
+
+# SSH agent should be running, and have the "correct" key of `ssh-keygen -t rsa` kind loaded.
+# The az-setup.sh script uses the first "ssh-rsa" key listed in `ssh-add -L`'s output.
+export DOCKER_SSHAGENT="-v $SSH_AUTH_SOCK:$SSH_AUTH_SOCK -e SSH_AUTH_SOCK"
+docker run --rm -it -v ${PWD}:/workdir $(echo $DOCKER_SSHAGENT) netlab-terraformer
 ```
 
-Then, inside `netlab-runner` container:
+Then, inside `netlab-terraformer` container:
 
 ```console
+az-setup.sh
+
 terraform init
 terraform plan
 terraform apply
 ```
 
-Or manually:
+Or, skipping Docker and doing it manually:
 
 Install at least
 [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli),

@@ -1,7 +1,5 @@
 FROM ubuntu:22.04
 
-ENV ARM_SUBSCRIPTION_ID 06b0ab03-5ae9-459a-bdd6-78a5caf206f0
-
 RUN apt update \
     && apt install -y curl
 
@@ -37,14 +35,6 @@ RUN echo "deb [arch=`dpkg --print-architecture` signed-by=/etc/apt/keyrings/micr
 # jq
 RUN apt install -y jq
 
-# Log in to Azure
-RUN az login \
-    && export ARM_SUBSCRIPTION_ID=$(az account list | jq -r '.[0].id') \
-    && echo "Working with subscription ${ARM_SUBSCRIPTION_ID}" \
-    && az account set --subscription $ARM_SUBSCRIPTION_ID \
-    && AZURE_SP=$(az ad sp create-for-rbac --role=Contributor "--scopes=/subscriptions/${ARM_SUBSCRIPTION_ID}") \
-    && export ARM_CLIENT_ID=$(echo $AZURE_SP | jq -r '.appId') \
-    && export ARM_CLIENT_SECRET=$(echo $AZURE_SP | jq -r '.password') \
-    && export ARM_TENANT_ID=$(echo $AZURE_SP | jq -r '.tenant')
+COPY ./docker/terraformer/az-setup.sh /usr/local/bin/
 
 WORKDIR /workdir
