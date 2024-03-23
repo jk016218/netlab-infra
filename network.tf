@@ -11,3 +11,10 @@ resource "azurerm_subnet" "netlab_main" {
   virtual_network_name = azurerm_virtual_network.netlab.name
   address_prefixes     = [var.netlab_main_prefix]
 }
+
+resource "azurerm_subnet" "netlab_payload" {
+  name                 = "netlab_payload"
+  resource_group_name  = azurerm_resource_group.netlab.name
+  virtual_network_name = azurerm_virtual_network.netlab.name
+  address_prefixes     = [var.netlab_payload_prefix]
+}
